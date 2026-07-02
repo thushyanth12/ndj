@@ -881,8 +881,32 @@ button, input, textarea, select { font: inherit; }
   .stats-grid { grid-template-columns: repeat(2,1fr); }
 }
 
+/* -- RESPONSIVE: IPAD (portrait & landscape) -------------------------- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .hero {
+    grid-template-columns: 1fr 1fr;
+    padding-top: 120px;
+    gap: 30px;
+    min-height: auto;
+    padding-bottom: 80px;
+  }
+  .hero-visuals {
+    height: 440px;
+  }
+  .why-grid,
+  .services-grid,
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .process-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+}
+
+
 /* -- RESPONSIVE: MOBILE -------------------------- */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   /* Prevent horizontal scroll */
   html, body {
     overflow-x: hidden;
