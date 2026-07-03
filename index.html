@@ -12,10 +12,14 @@
     <title>Ninja Design Hub | Premium Design & Web Agency</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;1,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <!-- SCROLL PROGRESS BAR -->
+    <div id="scroll-progress-wrap" aria-hidden="true"><div id="scroll-progress"></div></div>
+
+
     <!-- SKIP LINK -->
     <a class="skip-link" href="#main">Skip to content</a>
 
@@ -77,6 +81,9 @@
             <span class="badge-dot"></span>
             Available for new projects
           </div>
+          <p class="terminal-intro fade-up">
+            <span class="terminal-prompt">&nbsp;</span><span id="terminal-line"></span><span class="terminal-cursor" aria-hidden="true">|</span>
+          </p>
           <h1 id="hero-title" class="hero-title" data-split>Design &amp; websites for brands that want to stand out</h1>
           <p class="hero-subtitle reveal">
             We create stunning websites, UI/UX, branding, and digital experiences for businesses that demand more than ordinary.
@@ -264,6 +271,7 @@
           <div class="work-grid">
 
             <article class="project-card reveal" id="proj-dashboard">
+              <span class="proj-num" aria-hidden="true">01</span>
               <div class="pc-image">
                 <img src="assets/project-dashboard.png" alt="Signal Ops Analytics Dashboard" loading="lazy" />
                 <div class="pc-overlay"></div>
@@ -286,6 +294,7 @@
             </article>
 
             <article class="project-card reveal" id="proj-commerce">
+              <span class="proj-num" aria-hidden="true">02</span>
               <div class="pc-image">
                 <img src="assets/project-commerce.png" alt="Monochrome Commerce UI" loading="lazy" />
                 <div class="pc-overlay"></div>
@@ -307,6 +316,7 @@
             </article>
 
             <article class="project-card reveal" id="proj-mobile">
+              <span class="proj-num" aria-hidden="true">03</span>
               <div class="pc-image">
                 <img src="assets/project-mobile.png" alt="Focus Mobile Suite App" loading="lazy" />
                 <div class="pc-overlay"></div>
@@ -328,6 +338,7 @@
             </article>
 
             <article class="project-card reveal" id="proj-brand">
+              <span class="proj-num" aria-hidden="true">04</span>
               <div class="pc-image">
                 <img src="assets/project-brand.png" alt="Studio Launch Kit Brand" loading="lazy" />
                 <div class="pc-overlay"></div>

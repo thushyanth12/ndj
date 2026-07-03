@@ -1,30 +1,56 @@
 /* ============================================================
-   NINJA DESIGN HUB — Main Script
+   NINJA DESIGN HUB — Enhanced Main Script
    ============================================================ */
 
 'use strict';
 
-// ── LOADER ──────────────────────────────────────────────────
+/* ── PREFERS-REDUCED-MOTION ────────────────────────────────── */
+const PRM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ── LOADER ─────────────────────────────────────────────────── */
 const loader = document.getElementById('loader');
+document.body.style.overflow = 'hidden';
 window.addEventListener('load', () => {
   setTimeout(() => {
     loader.classList.add('hidden');
     document.body.style.overflow = '';
   }, 1900);
 });
-document.body.style.overflow = 'hidden';
 
-// ── HEADER SCROLL STATE ──────────────────────────────────────
-const header = document.querySelector('[data-header]');
-const setHeaderState = () => {
-  header.classList.toggle('is-scrolled', window.scrollY > 30);
-};
-setHeaderState();
-window.addEventListener('scroll', setHeaderState, { passive: true });
+/* ── SCROLL STATE (single rAF loop) ─────────────────────────── */
+const progressBar   = document.getElementById('scroll-progress');
+const header        = document.querySelector('[data-header]');
 
-// ── MOBILE MENU ──────────────────────────────────────────────
-const menuToggles = document.querySelectorAll('[data-menu-toggle]');
-const mobilePanel = document.querySelector('[data-mobile-panel]');
+const allSections = Array.from(document.querySelectorAll('section[id]'));
+
+let ticking = false;
+
+function onScroll() {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(updateScroll);
+}
+
+function updateScroll() {
+  const scrollY     = window.scrollY;
+  const docH        = document.documentElement.scrollHeight - window.innerHeight;
+  const pct         = docH > 0 ? Math.min((scrollY / docH) * 100, 100) : 0;
+
+  /* Progress bar */
+  if (progressBar) progressBar.style.width = pct + '%';
+
+  /* Header scrolled state */
+  if (header) header.classList.toggle('is-scrolled', scrollY > 30);
+
+  ticking = false;
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll(); // run once on load
+
+/* ── MOBILE MENU ────────────────────────────────────────────── */
+const menuToggles   = document.querySelectorAll('[data-menu-toggle]');
+const mobilePanel   = document.querySelector('[data-mobile-panel]');
 const mobileOverlay = document.querySelector('[data-mobile-overlay]');
 
 const openMenu = () => {
@@ -42,15 +68,13 @@ const closeMenu = () => {
 
 menuToggles.forEach(toggle => {
   toggle.addEventListener('click', () => {
-    const isOpen = mobilePanel.classList.contains('is-open');
-    isOpen ? closeMenu() : openMenu();
+    mobilePanel.classList.contains('is-open') ? closeMenu() : openMenu();
   });
 });
-
 mobileOverlay.addEventListener('click', closeMenu);
 mobilePanel.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
 
-// ── HERO TITLE WORD SPLIT ─────────────────────────────────────
+/* ── HERO TITLE WORD SPLIT ──────────────────────────────────── */
 const splitEl = document.querySelector('[data-split]');
 if (splitEl) {
   const words = splitEl.textContent.trim().split(/\s+/);
@@ -59,7 +83,34 @@ if (splitEl) {
   ).join(' ');
 }
 
-// ── INTERSECTION OBSERVER — REVEAL ───────────────────────────
+/* ── TERMINAL CURSOR ────────────────────────────────────────── */
+const terminalLine = document.getElementById('terminal-line');
+if (terminalLine) {
+  const phrases = [
+    'crafting digital experiences',
+    'building premium websites',
+    'designing brand identities',
+    'shipping pixel-perfect UI',
+  ];
+  let pIdx = 0, cIdx = 0, deleting = false;
+  const SPEED_TYPE = 65, SPEED_DEL = 35, PAUSE = 2000;
+
+  function typeLoop() {
+    const phrase = phrases[pIdx];
+    terminalLine.textContent = phrase.slice(0, cIdx);
+    if (!deleting) {
+      if (cIdx < phrase.length) { cIdx++; setTimeout(typeLoop, SPEED_TYPE); }
+      else { deleting = true; setTimeout(typeLoop, PAUSE); }
+    } else {
+      if (cIdx > 0) { cIdx--; setTimeout(typeLoop, SPEED_DEL); }
+      else { deleting = false; pIdx = (pIdx + 1) % phrases.length; setTimeout(typeLoop, 400); }
+    }
+  }
+  if (!PRM) typeLoop();
+  else terminalLine.textContent = phrases[0];
+}
+
+/* ── INTERSECTION OBSERVER — .reveal (existing) ─────────────── */
 const revealObs = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -67,80 +118,82 @@ const revealObs = new IntersectionObserver((entries) => {
       revealObs.unobserve(entry.target);
     }
   });
-}, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+}, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
 
 document.querySelectorAll('.reveal').forEach((el, i) => {
   el.style.transitionDelay = `${Math.min(i % 6, 5) * 65}ms`;
   revealObs.observe(el);
 });
 
-// ── STAT COUNTER ANIMATION ────────────────────────────────────
+/* ── INTERSECTION OBSERVER — .fade-up (new reusable class) ──── */
+const fadeUpObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
+      fadeUpObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -5% 0px' });
+
+document.querySelectorAll('.fade-up').forEach((el, i) => {
+  el.style.transitionDelay = `${(i % 5) * 80}ms`;
+  fadeUpObs.observe(el);
+});
+
+/* ── STAT COUNTER ───────────────────────────────────────────── */
 const counters = document.querySelectorAll('.stat-num[data-count]');
 const countObs = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (!entry.isIntersecting) return;
-    const el = entry.target;
+    const el     = entry.target;
     const target = parseInt(el.dataset.count, 10);
-    const duration = 1600;
-    const step = target / (duration / 16);
-    let current = 0;
+    const dur    = 1600;
+    const step   = target / (dur / 16);
+    let cur = 0;
     const tick = () => {
-      current = Math.min(current + step, target);
-      el.textContent = Math.floor(current);
-      if (current < target) requestAnimationFrame(tick);
+      cur = Math.min(cur + step, target);
+      el.textContent = Math.floor(cur);
+      if (cur < target) requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
     countObs.unobserve(el);
   });
 }, { threshold: 0.5 });
-
 counters.forEach(c => countObs.observe(c));
 
-// ── PARALLAX HERO GLOW ────────────────────────────────────────
+/* ── PARALLAX HERO GLOW ─────────────────────────────────────── */
 const heroGlow = document.querySelector('.hero-glow');
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-if (!prefersReducedMotion && heroGlow) {
+if (!PRM && heroGlow) {
   document.querySelector('.hero')?.addEventListener('mousemove', e => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    const y = ((e.clientY - rect.top)  / rect.height) * 100;
     heroGlow.style.left = `${x}%`;
-    heroGlow.style.top = `${y}%`;
+    heroGlow.style.top  = `${y}%`;
   }, { passive: true });
 }
 
-// ── CONTACT FORM ──────────────────────────────────────────────
-const form = document.getElementById('contact-form');
+/* ── CONTACT FORM ───────────────────────────────────────────── */
+const form        = document.getElementById('contact-form');
 const formSuccess = document.getElementById('form-success');
-const submitBtn = document.getElementById('form-submit-btn');
+const submitBtn   = document.getElementById('form-submit-btn');
 
 if (form) {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-
-    // Basic validation
     const required = form.querySelectorAll('[required]');
     let valid = true;
     required.forEach(field => {
       field.style.borderColor = '';
-      if (!field.value.trim()) {
-        field.style.borderColor = '#e53935';
-        valid = false;
-      }
+      if (!field.value.trim()) { field.style.borderColor = '#e53935'; valid = false; }
     });
-
-    // Email validation
     const emailField = document.getElementById('field-email');
-    const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRx    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailField && !emailRx.test(emailField.value)) {
-      emailField.style.borderColor = '#e53935';
-      valid = false;
+      emailField.style.borderColor = '#e53935'; valid = false;
     }
-
     if (!valid) return;
 
-    // Simulate send
     const label = submitBtn.querySelector('.btn-label');
     label.textContent = 'Sending…';
     submitBtn.disabled = true;
@@ -150,26 +203,26 @@ if (form) {
       form.style.display = 'none';
       formSuccess.classList.add('show');
       submitBtn.disabled = false;
-      label.textContent = 'Send Message';
+      label.textContent  = 'Send Message';
     }, 1400);
   });
 }
 
-// ── SMOOTH NAV ACTIVE STATE ───────────────────────────────────
-const sections = document.querySelectorAll('section[id]');
+/* ── DESKTOP NAV ACTIVE (fallback via IntersectionObserver) ─── */
 const navLinks = document.querySelectorAll('.desktop-nav a');
-
 const activeObs = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       navLinks.forEach(link => {
-        link.classList.toggle(
-          'active',
-          link.getAttribute('href') === `#${entry.target.id}`
-        );
+        link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
       });
     }
   });
 }, { threshold: 0.4 });
+allSections.forEach(s => activeObs.observe(s));
 
-sections.forEach(s => activeObs.observe(s));
+/* ── PROJECT CARD — number labels ──────────────────────────── */
+document.querySelectorAll('.project-card').forEach((card, i) => {
+  const num = card.querySelector('.proj-num');
+  if (num) num.textContent = String(i + 1).padStart(2, '0');
+});
