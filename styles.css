@@ -941,6 +941,28 @@ button, input, textarea, select { font: inherit; }
 @media (max-width: 1024px) {
   .section { padding: clamp(60px, 8vw, 100px) 0; }
 
+  /* Nav mobile triggers at 1024px instead of 767px */
+  .desktop-nav, .nav-cta { display: none; }
+  .menu-toggle {
+    display: flex;
+    width: 44px; height: 44px;
+    align-items: center; justify-content: center;
+  }
+  .mobile-close { width: 44px; height: 44px; top: 16px; right: 16px; }
+  .mobile-panel { width: 88vw; padding: 72px 22px 32px; overflow-y: auto; }
+  .mobile-panel nav a {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.4rem; font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-main);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding-bottom: 14px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .mobile-cta { align-self: stretch; justify-content: center; min-height: 48px; }
+
   .hero {
     grid-template-columns: 1fr;
     padding-top: 110px;
@@ -966,22 +988,10 @@ button, input, textarea, select { font: inherit; }
 
 /* ── 768 – 1024px  Tablet portrait ──────────────────────── */
 @media (min-width: 768px) and (max-width: 1024px) {
-  .hero {
-    grid-template-columns: 1fr 1fr;
-    padding-top: 120px;
-    gap: 24px;
-    padding-bottom: 72px;
-  }
-  .hero-visuals { height: 420px; }
-  .hero-title { font-size: clamp(2rem, 4.5vw, 3.2rem); }
-
-  .desktop-nav { gap: 20px; }
-  .desktop-nav a { font-size: 0.68rem; }
-
-  .why-grid { grid-template-columns: repeat(2, 1fr); }
-  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Hero, Nav and other components fall back to the <= 1024px rules. 
+     We specify tablet portrait customizations here. */
+  .hero-visuals { height: 380px; }
   .stats-grid { grid-template-columns: repeat(4, 1fr); }
-  .process-grid { grid-template-columns: repeat(3, 1fr); gap: 28px; }
   .testi-grid { grid-template-columns: repeat(2, 1fr); max-width: none; }
   .work-grid { grid-template-columns: repeat(2, 1fr); max-width: none; }
   .section-title { font-size: clamp(1.7rem, 3.5vw, 2.6rem); }
@@ -993,28 +1003,6 @@ button, input, textarea, select { font: inherit; }
 
   .section { padding: 56px 0; }
   .container { padding-inline: 18px; }
-
-  /* Nav */
-  .desktop-nav, .nav-cta { display: none; }
-  .menu-toggle {
-    display: flex;
-    width: 44px; height: 44px;
-    align-items: center; justify-content: center;
-  }
-  .mobile-close { width: 44px; height: 44px; top: 16px; right: 16px; }
-  .mobile-panel { width: 88vw; padding: 72px 22px 32px; overflow-y: auto; }
-  .mobile-panel nav a {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.4rem; font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--text-main);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    padding-bottom: 14px;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-  }
-  .mobile-cta { align-self: stretch; justify-content: center; min-height: 48px; }
 
   /* Hero */
   .hero {
@@ -1093,7 +1081,9 @@ button, input, textarea, select { font: inherit; }
 
   /* Process */
   .process-grid { grid-template-columns: 1fr; gap: 20px; }
-  .process-card {
+  .process-card { padding-inline: 0; }
+
+  /* Contact Form */
   .contact-form {
     padding: 20px;
     gap: 14px;
