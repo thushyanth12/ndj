@@ -110,7 +110,7 @@ if (terminalLine) {
   else terminalLine.textContent = phrases[0];
 }
 
-/* ── INTERSECTION OBSERVER — .reveal (existing) ─────────────── */
+/* ── INTERSECTION OBSERVER — .reveal (staggered by group) ───── */
 const revealObs = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -118,10 +118,16 @@ const revealObs = new IntersectionObserver((entries) => {
       revealObs.unobserve(entry.target);
     }
   });
-}, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+}, { threshold: 0.06, rootMargin: '0px 0px -4% 0px' });
 
-document.querySelectorAll('.reveal').forEach((el, i) => {
-  el.style.transitionDelay = `${Math.min(i % 6, 5) * 65}ms`;
+// Group siblings in same parent for stagger — feels more orchestrated
+document.querySelectorAll('.reveal').forEach((el) => {
+  const siblings = el.parentElement
+    ? Array.from(el.parentElement.querySelectorAll('.reveal'))
+    : [el];
+  const idx = siblings.indexOf(el);
+  // Max 5 items stagger, 70ms step — smooth without feeling slow
+  el.style.transitionDelay = `${Math.min(idx, 4) * 70}ms`;
   revealObs.observe(el);
 });
 
@@ -136,7 +142,7 @@ const fadeUpObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.1, rootMargin: '0px 0px -5% 0px' });
 
 document.querySelectorAll('.fade-up').forEach((el, i) => {
-  el.style.transitionDelay = `${(i % 5) * 80}ms`;
+  el.style.transitionDelay = `${(i % 4) * 75}ms`;
   fadeUpObs.observe(el);
 });
 
@@ -161,16 +167,50 @@ const countObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 counters.forEach(c => countObs.observe(c));
 
-/* ── PARALLAX HERO GLOW ─────────────────────────────────────── */
+/* ── PARALLAX HERO GLOW (smooth lerp) ─────────────────────── */
 const heroGlow = document.querySelector('.hero-glow');
-if (!PRM && heroGlow) {
-  document.querySelector('.hero')?.addEventListener('mousemove', e => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top)  / rect.height) * 100;
-    heroGlow.style.left = `${x}%`;
-    heroGlow.style.top  = `${y}%`;
+const heroSection = document.querySelector('.hero');
+if (!PRM && heroGlow && heroSection) {
+  let glowX = 30, glowY = 50, targetX = 30, targetY = 50;
+  let glowRaf = null;
+
+  function lerpGlow() {
+    glowX += (targetX - glowX) * 0.06;
+    glowY += (targetY - glowY) * 0.06;
+    heroGlow.style.left = `${glowX}%`;
+    heroGlow.style.top  = `${glowY}%`;
+    glowRaf = requestAnimationFrame(lerpGlow);
+  }
+
+  heroSection.addEventListener('mouseenter', () => {
+    glowRaf = requestAnimationFrame(lerpGlow);
   }, { passive: true });
+  heroSection.addEventListener('mouseleave', () => {
+    cancelAnimationFrame(glowRaf);
+    // Drift back to center
+    targetX = 30; targetY = 50;
+    glowRaf = requestAnimationFrame(lerpGlow);
+    setTimeout(() => cancelAnimationFrame(glowRaf), 1000);
+  }, { passive: true });
+  heroSection.addEventListener('mousemove', e => {
+    const rect = heroSection.getBoundingClientRect();
+    targetX = ((e.clientX - rect.left) / rect.width) * 100;
+    targetY = ((e.clientY - rect.top)  / rect.height) * 100;
+  }, { passive: true });
+}
+
+/* ── CARD MOUSE-GLOW SPOTLIGHT ─────────────────────────────── */
+if (!PRM) {
+  const glowCards = document.querySelectorAll('.why-card, .service-card, .project-card');
+  glowCards.forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width)  * 100;
+      const y = ((e.clientY - r.top)  / r.height) * 100;
+      card.style.setProperty('--mx', `${x}%`);
+      card.style.setProperty('--my', `${y}%`);
+    }, { passive: true });
+  });
 }
 
 /* ── CONTACT FORM ───────────────────────────────────────────── */

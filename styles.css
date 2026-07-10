@@ -1,25 +1,43 @@
 /* ============================================================
-   NINJA DESIGN HUB — Premium Black & Rustic Gold
+   NINJA DESIGN HUB â€” Premium Black & Rustic Gold
    ============================================================ */
 
 :root {
   --black: #050505;
   --dark-black: #0a0a0a;
   --soft-black: #111111;
-  --rustic-gold: #b88746;
-  --muted-rustic-gold: #c89b5d;
-  --gold-border: rgba(184,135,70,0.35);
-  --gold-glow: rgba(184,135,70,0.28);
-  --text-main: #f5efe6;
+  --rustic-gold: #e03000;
+  --muted-rustic-gold: #ff4500;
+  --deep-gold: #c02800;
+  --gold-border: rgba(224,48,0,0.35);
+  --gold-glow: rgba(224,48,0,0.28);
+  --gold-glow-strong: rgba(224,48,0,0.18);
+  --text-main: #f5f0ee;
   --text-muted: #a8a8a8;
   --max: 1200px;
   --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Gradient tokens */
+  --grad-hero: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(224,48,0,0.10) 0%, transparent 65%),
+               radial-gradient(ellipse 50% 50% at 10% 80%, rgba(231,72,60,0.06) 0%, transparent 60%),
+               linear-gradient(165deg, #050505 0%, #0d0300 50%, #050505 100%);
+  --grad-dark: linear-gradient(160deg, #0a0a0a 0%, #0e0400 40%, #0a0a0a 100%);
+  --grad-section: linear-gradient(180deg, #050505 0%, #080200 100%);
+  --grad-accent-strip: linear-gradient(90deg, transparent 0%, rgba(224,48,0,0.06) 30%, rgba(224,48,0,0.10) 50%, rgba(224,48,0,0.06) 70%, transparent 100%);
+  /* Scroll */
+  --header-h: 80px;
 }
 
-/* ── RESET ─────────────────────────────────────── */
+/* â”€â”€ RESET â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; -webkit-text-size-adjust: 100%; }
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  /* Offset anchor scrolls so content clears the fixed header */
+  scroll-padding-top: calc(var(--header-h) + 16px);
+}
 body {
   background: var(--black);
   color: var(--text-main);
@@ -41,7 +59,7 @@ button, input, textarea, select { font: inherit; }
   outline-offset: 4px;
 }
 
-/* ── SKIP LINK ─────────────────────────────────── */
+/* â”€â”€ SKIP LINK â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .skip-link {
   position: fixed; left: 16px; top: 16px; z-index: 999;
   background: var(--rustic-gold); color: var(--black);
@@ -50,7 +68,7 @@ button, input, textarea, select { font: inherit; }
 }
 .skip-link:focus { transform: translateY(0); }
 
-/* ── LOADER ────────────────────────────────────── */
+/* â”€â”€ LOADER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .loader {
   position: fixed; inset: 0; z-index: 9999;
   background: var(--black);
@@ -76,7 +94,7 @@ button, input, textarea, select { font: inherit; }
 .loader-rest { opacity: 0; animation: fadeIn 0.8s 0.4s var(--ease) forwards; }
 .loader-bar {
   width: 200px; height: 2px;
-  background: rgba(184,135,70,0.15);
+  background: rgba(224,48,0,0.15);
   border-radius: 2px; margin: 0 auto;
 }
 .loader-fill {
@@ -88,14 +106,14 @@ button, input, textarea, select { font: inherit; }
 @keyframes loaderPulse { from { opacity: 0.4; } to { opacity: 1; } }
 @keyframes fadeIn { to { opacity: 1; } }
 
-/* ── CONTAINER ─────────────────────────────────── */
+/* â”€â”€ CONTAINER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .container {
   width: min(100%, var(--max));
   margin-inline: auto;
   padding-inline: clamp(18px, 5vw, 56px);
 }
 
-/* ── BUTTONS ───────────────────────────────────── */
+/* â”€â”€ BUTTONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .btn-gold {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 12px 26px;
@@ -126,7 +144,7 @@ button, input, textarea, select { font: inherit; }
 }
 .btn-outline:hover {
   border-color: var(--rustic-gold);
-  background: rgba(184,135,70,0.08);
+  background: rgba(224,48,0,0.08);
   transform: translateY(-2px);
   color: var(--muted-rustic-gold);
 }
@@ -144,7 +162,7 @@ button, input, textarea, select { font: inherit; }
   background: rgba(184,135,70,0.1);
 }
 
-/* ── HEADER ────────────────────────────────────── */
+/* â”€â”€ HEADER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .site-header {
   position: fixed; inset: 0 0 auto;
   z-index: 100;
@@ -211,7 +229,7 @@ button, input, textarea, select { font: inherit; }
 .menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-/* ── MOBILE PANEL ──────────────────────────────── */
+/* â”€â”€ MOBILE PANEL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .mobile-panel {
   position: fixed; inset: 0 0 0 auto;
   z-index: 200; width: min(85vw, 340px);
@@ -249,7 +267,7 @@ button, input, textarea, select { font: inherit; }
 }
 .mobile-overlay.is-open { opacity: 1; pointer-events: all; }
 
-/* ── SECTIONS ──────────────────────────────────── */
+/* â”€â”€ SECTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .section {
   padding: clamp(80px, 10vw, 140px) 0;
 }
@@ -271,35 +289,38 @@ button, input, textarea, select { font: inherit; }
 }
 .section-title em { font-style: italic; color: var(--rustic-gold); }
 
-/* ── REVEAL ANIMATIONS ─────────────────────────── */
+/* â”€â”€ REVEAL ANIMATIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .reveal {
-  opacity: 0; transform: translateY(32px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.65s var(--ease-out), transform 0.65s var(--ease-out);
+  will-change: opacity, transform;
 }
-.reveal.is-visible { opacity: 1; transform: translateY(0); }
+.reveal.is-visible { opacity: 1; transform: translateY(0); will-change: auto; }
 
-/* ── HERO ──────────────────────────────────────── */
+/* â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .hero {
   position: relative; min-height: 100svh;
   display: grid; grid-template-columns: 1fr 1fr;
   align-items: center; overflow: hidden;
   padding: 0 clamp(18px, 5vw, 56px);
   padding-top: 100px;
-  background: var(--black);
+  background: var(--grad-hero);
 }
 .hero-grid-texture {
   position: absolute; inset: 0; z-index: 0;
   background-image:
-    linear-gradient(rgba(184,135,70,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(184,135,70,0.04) 1px, transparent 1px);
+    linear-gradient(rgba(224,48,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(224,48,0,0.04) 1px, transparent 1px);
   background-size: 60px 60px;
   pointer-events: none;
 }
 .hero-glow {
   position: absolute; width: 700px; height: 700px;
-  background: radial-gradient(circle, rgba(184,135,70,0.12) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(224,48,0,0.18) 0%, rgba(224,48,0,0.06) 40%, transparent 70%);
   top: 50%; left: 30%; transform: translate(-50%, -50%);
   pointer-events: none; z-index: 0;
+  transition: left 0.6s var(--ease-out), top 0.6s var(--ease-out);
+  will-change: left, top;
 }
 .hero-content { position: relative; z-index: 2; }
 .hero-badge {
@@ -389,21 +410,33 @@ button, input, textarea, select { font: inherit; }
 }
 @keyframes cue { 0%,100%{transform:scaleY(0.4);transform-origin:top} 50%{transform:scaleY(1);transform-origin:top} }
 
-/* ── WHY US ────────────────────────────────────── */
-.why-us { background: var(--dark-black); }
+/* â”€â”€ WHY US â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.why-us {
+  background: var(--grad-dark);
+  position: relative;
+}
+.why-us::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 90% 20%, rgba(224,48,0,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 5% 80%, rgba(231,72,60,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
 .why-grid {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
 }
 .why-card {
-  background: var(--soft-black);
+  background: linear-gradient(145deg, #141414 0%, #111111 60%, #0f0f0f 100%);
   border: 1px solid var(--gold-border);
   border-radius: 10px; padding: 32px 26px;
-  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s var(--ease);
+  transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease), transform 0.3s var(--ease-spring);
+  will-change: transform;
 }
 .why-card:hover {
-  border-color:orangered;
-  box-shadow: 0 0 30px var(--gold-glow);
-  transform: translateY(-4px);
+  border-color: orangered;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 24px var(--gold-glow);
+  transform: translateY(-6px);
 }
 .why-icon {
   font-size: 1.6rem; color: orangered;
@@ -417,11 +450,19 @@ button, input, textarea, select { font: inherit; }
 }
 .why-card p { font-family: 'Inter', sans-serif; font-size: 0.875rem; color: var(--text-muted); line-height: 1.7; }
 
-/* ── STATS ─────────────────────────────────────── */
+/* â”€â”€ STATS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .stats-section {
-  background: var(--black);
+  background: linear-gradient(135deg, #050505 0%, #0b0300 40%, #070200 70%, #050505 100%);
   border-top: 1px solid var(--gold-border);
   border-bottom: 1px solid var(--gold-border);
+  position: relative;
+  overflow: hidden;
+}
+.stats-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--grad-accent-strip);
+  pointer-events: none;
 }
 .stats-grid {
   display: grid; grid-template-columns: repeat(4,1fr);
@@ -452,8 +493,12 @@ button, input, textarea, select { font: inherit; }
   margin-top: 10px; letter-spacing: 0.1em; text-transform: uppercase;
 }
 
-/* ── BRANDS ────────────────────────────────────── */
-.brands-section { background: var(--dark-black); padding-block: 60px; }
+/* â”€â”€ BRANDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.brands-section {
+  background: linear-gradient(180deg, #0a0a0a 0%, #0d0b08 50%, #0a0a0a 100%);
+  padding-block: 60px;
+  position: relative;
+}
 .brands-section .eyebrow { display: block; margin-bottom: 36px; }
 .brands-track { overflow: hidden; }
 .brands-inner {
@@ -473,23 +518,29 @@ button, input, textarea, select { font: inherit; }
 @keyframes brandScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
 /* -- SERVICES ------------------------------------ */
-.services-section { background: var(--black); }
+.services-section {
+  background:
+    radial-gradient(ellipse 70% 60% at 50% -10%, rgba(224,48,0,0.07) 0%, transparent 60%),
+    linear-gradient(180deg, #050505 0%, #080200 100%);
+  position: relative;
+}
 .services-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 18px;
 }
 .service-card {
-  background: var(--soft-black);
+  background: linear-gradient(145deg, #141414 0%, #111111 60%, #0f0f0f 100%);
   border: 1px solid var(--gold-border);
   border-radius: 10px;
   padding: 30px 26px;
-  transition: border-color 0.3s, box-shadow 0.35s, transform 0.3s var(--ease);
+  transition: border-color 0.3s var(--ease), box-shadow 0.35s var(--ease), transform 0.3s var(--ease-spring);
+  will-change: transform;
 }
 .service-card:hover {
-  border-color:orangered;
-  box-shadow: 0 0 36px var(--gold-glow);
-  transform: translateY(-5px);
+  border-color: orangered;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 28px var(--gold-glow);
+  transform: translateY(-6px);
 }
 .sc-icon {
   font-size: 2rem;
@@ -512,23 +563,29 @@ button, input, textarea, select { font: inherit; }
 }
 
 /* -- WORK / PROJECTS ----------------------------- */
-.work-section { background: var(--dark-black); }
+.work-section {
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 50%, rgba(224,48,0,0.06) 0%, transparent 65%),
+    linear-gradient(160deg, #0a0a0a 0%, #0d0b08 50%, #0a0a0a 100%);
+  position: relative;
+}
 .work-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
 }
 .project-card {
-  background: var(--soft-black);
+  background: linear-gradient(145deg, #141414 0%, #111111 60%, #0f0f0f 100%);
   border: 1px solid var(--gold-border);
   border-radius: 12px;
   overflow: hidden;
-  transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s var(--ease);
+  transition: border-color 0.35s var(--ease), box-shadow 0.35s var(--ease), transform 0.35s var(--ease-spring);
+  will-change: transform;
 }
 .project-card:hover {
   border-color: var(--rustic-gold);
-  box-shadow: 0 12px 48px var(--gold-glow);
-  transform: translateY(-6px);
+  box-shadow: 0 16px 56px rgba(0,0,0,0.7), 0 0 32px var(--gold-glow);
+  transform: translateY(-8px);
 }
 .pc-image {
   position: relative;
@@ -590,22 +647,30 @@ button, input, textarea, select { font: inherit; }
 }
 
 /* -- TESTIMONIALS -------------------------------- */
-.testimonials-section { background: var(--black); }
+.testimonials-section {
+  background:
+    radial-gradient(ellipse 60% 70% at 80% 30%, rgba(224,48,0,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 10% 70%, rgba(231,72,60,0.04) 0%, transparent 60%),
+    linear-gradient(170deg, #050505 0%, #080506 100%);
+  position: relative;
+}
 .testi-grid {
   display: grid;
   grid-template-columns: repeat(3,1fr);
   gap: 20px;
 }
 .testi-card {
-  background: var(--soft-black);
+  background: linear-gradient(145deg, #141414 0%, #111111 60%, #0f0f0f 100%);
   border: 1px solid var(--gold-border);
   border-radius: 12px;
   padding: 32px 28px;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease), transform 0.3s var(--ease-spring);
+  will-change: transform;
 }
 .testi-card:hover {
-  border-color:orangered;
-  box-shadow: 0 8px 32px var(--gold-glow);
+  border-color: orangered;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 20px var(--gold-glow);
+  transform: translateY(-4px);
 }
 .testi-stars {
   font-size: 0.9rem;
@@ -649,7 +714,12 @@ button, input, textarea, select { font: inherit; }
 }
 
 /* -- PROCESS ------------------------------------- */
-.process-section { background: var(--dark-black); }
+.process-section {
+  background:
+    radial-gradient(ellipse 50% 60% at 50% 100%, rgba(224,48,0,0.08) 0%, transparent 65%),
+    linear-gradient(180deg, #0a0a0a 0%, #0e0400 60%, #0a0a0a 100%);
+  position: relative;
+}
 .process-grid {
   display: grid;
   grid-template-columns: repeat(4,1fr);
@@ -698,7 +768,12 @@ button, input, textarea, select { font: inherit; }
 }
 
 /* -- FAQ ----------------------------------------- */
-.faq-section { background: var(--black); }
+.faq-section {
+  background:
+    radial-gradient(ellipse 60% 40% at 100% 50%, rgba(224,48,0,0.05) 0%, transparent 60%),
+    linear-gradient(180deg, #050505 0%, #080200 100%);
+  position: relative;
+}
 .faq-container { max-width: 820px; }
 .faq-list { display: flex; flex-direction: column; gap: 12px; }
 .faq-item {
@@ -746,7 +821,13 @@ button, input, textarea, select { font: inherit; }
 }
 
 /* -- CONTACT ------------------------------------- */
-.contact-section { background: var(--dark-black); }
+.contact-section {
+  background:
+    radial-gradient(ellipse 70% 70% at 30% 50%, rgba(224,48,0,0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 90% 20%, rgba(231,72,60,0.05) 0%, transparent 60%),
+    linear-gradient(155deg, #0a0a0a 0%, #0f0400 50%, #0a0a0a 100%);
+  position: relative;
+}
 .contact-inner {
   display: grid;
   grid-template-columns: 1fr 1.3fr;
@@ -824,7 +905,7 @@ button, input, textarea, select { font: inherit; }
   -webkit-appearance: none;
 }
 .form-group select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b88746' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e03000' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
   padding-right: 36px;
@@ -869,9 +950,17 @@ button, input, textarea, select { font: inherit; }
 
 /* -- FOOTER -------------------------------------- */
 .site-footer {
-  background: var(--dark-black);
+  background: linear-gradient(180deg, #0a0a0a 0%, #070200 60%, #050505 100%);
   border-top: 1px solid var(--gold-border);
   padding: 60px 0 0;
+  position: relative;
+}
+.site-footer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--rustic-gold) 30%, var(--muted-rustic-gold) 50%, var(--rustic-gold) 70%, transparent 100%);
+  opacity: 0.6;
 }
 .footer-inner {
   display: grid;
@@ -919,10 +1008,10 @@ button, input, textarea, select { font: inherit; }
 }
 
 /* ==========================================================
-   RESPONSIVE SYSTEM — 6 Breakpoints
+   RESPONSIVE SYSTEM â€” 6 Breakpoints
    ========================================================== */
 
-/* ── ≥ 1400px  Wide desktop ──────────────────────────────── */
+/* â”€â”€ â‰¥ 1400px  Wide desktop â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (min-width: 1400px) {
   :root { --max: 1320px; }
   .hero-title { font-size: 5rem; }
@@ -931,13 +1020,13 @@ button, input, textarea, select { font: inherit; }
   .services-grid { gap: 22px; }
 }
 
-/* ── ≤ 1200px  Desktop ───────────────────────────────────── */
+/* â”€â”€ â‰¤ 1200px  Desktop â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 1200px) {
   .services-grid { grid-template-columns: repeat(4, 1fr); gap: 14px; }
   .why-grid { gap: 16px; }
 }
 
-/* ── ≤ 1024px  Tablet landscape ─────────────────────────── */
+/* â”€â”€ â‰¤ 1024px  Tablet landscape â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 1024px) {
   .section { padding: clamp(60px, 8vw, 100px) 0; }
 
@@ -986,7 +1075,7 @@ button, input, textarea, select { font: inherit; }
   .footer-inner { grid-template-columns: 1fr; gap: 36px; }
 }
 
-/* ── 768 – 1024px  Tablet portrait ──────────────────────── */
+/* â”€â”€ 768 â€“ 1024px  Tablet portrait â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (min-width: 768px) and (max-width: 1024px) {
   /* Hero, Nav and other components fall back to the <= 1024px rules. 
      We specify tablet portrait customizations here. */
@@ -997,7 +1086,7 @@ button, input, textarea, select { font: inherit; }
   .section-title { font-size: clamp(1.7rem, 3.5vw, 2.6rem); }
 }
 
-/* ── ≤ 767px  Mobile ─────────────────────────────────────── */
+/* â”€â”€ â‰¤ 767px  Mobile â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 767px) {
   html, body { overflow-x: hidden; }
 
@@ -1142,6 +1231,32 @@ button, input, textarea, select { font: inherit; }
   }
 }
 
+/* â”€â”€ â‰¤ 375px  Small phone â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+@media (max-width: 375px) {
+  .hero-title {
+    font-size: clamp(1.75rem, 8vw, 2.2rem);
+  }
+  .section-title {
+    font-size: clamp(1.4rem, 7vw, 1.8rem);
+  }
+  .hero-badge {
+    font-size: 0.68rem;
+    padding: 6px 12px;
+  }
+  .hero-actions .btn-gold,
+  .hero-actions .btn-outline {
+    font-size: 0.75rem;
+    padding: 13px 20px;
+  }
+  .stat-num { font-size: clamp(1.8rem, 9vw, 2.6rem); }
+  .stat-plus { font-size: clamp(1.1rem, 5vw, 1.6rem); }
+  .btn-gold, .btn-outline { padding: 11px 20px; font-size: 0.74rem; }
+  .why-card, .service-card { padding: 18px 14px; }
+  .contact-form { padding: 16px; }
+  .float-card { padding: 12px 14px; }
+  .fc-icon { font-size: 1.4rem; }
+}
+
 /* -- REDUCED MOTION ------------------------------ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -1169,10 +1284,10 @@ button, input, textarea, select { font: inherit; }
 }
 
 /* ============================================================
-   ENHANCEMENT LAYER — Scroll, Scrubber, Animations, Micro-UX
+   ENHANCEMENT LAYER â€” Scroll, Scrubber, Animations, Micro-UX
    ============================================================ */
 
-/* ── TYPOGRAPHY UPGRADE ──────────────────────────────────────── */
+/* â”€â”€ TYPOGRAPHY UPGRADE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .section-title,
 .hero-title,
 .contact-copy h2 {
@@ -1191,7 +1306,7 @@ button, input, textarea, select { font: inherit; }
   font-family: 'JetBrains Mono', 'Courier New', monospace;
 }
 
-/* ── SCROLL PROGRESS BAR ─────────────────────────────────────── */
+/* â”€â”€ SCROLL PROGRESS BAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #scroll-progress-wrap {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -1210,7 +1325,7 @@ button, input, textarea, select { font: inherit; }
 
 
 
-/* ── FADE-UP — reusable class ────────────────────────────────── */
+/* â”€â”€ FADE-UP â€” reusable class â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .fade-up {
   opacity: 0;
   transform: translateY(28px);
@@ -1221,7 +1336,7 @@ button, input, textarea, select { font: inherit; }
   transform: translateY(0);
 }
 
-/* ── TERMINAL INTRO LINE ─────────────────────────────────────── */
+/* â”€â”€ TERMINAL INTRO LINE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .terminal-intro {
   font-family: 'JetBrains Mono', 'Courier New', monospace;
   font-size: 0.78rem;
@@ -1249,7 +1364,7 @@ button, input, textarea, select { font: inherit; }
   50%       { opacity: 0; }
 }
 
-/* ── BADGE DOT — pulsing ring ────────────────────────────────── */
+/* â”€â”€ BADGE DOT â€” pulsing ring â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .badge-dot {
   position: relative;
 }
@@ -1267,7 +1382,7 @@ button, input, textarea, select { font: inherit; }
   100% { transform: scale(2.2); opacity: 0; }
 }
 
-/* ── PROJECT NUMBER LABEL ────────────────────────────────────── */
+/* â”€â”€ PROJECT NUMBER LABEL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .project-card {
   position: relative;
 }
@@ -1289,7 +1404,7 @@ button, input, textarea, select { font: inherit; }
   backdrop-filter: blur(4px);
 }
 
-/* ── ENHANCED CARD HOVER GLOW ────────────────────────────────── */
+/* â”€â”€ ENHANCED CARD HOVER GLOW â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .why-card,
 .service-card,
 .project-card,
@@ -1305,7 +1420,7 @@ button, input, textarea, select { font: inherit; }
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at var(--mx,50%) var(--my,50%),
-    rgba(184,135,70,0.08) 0%, transparent 65%);
+    rgba(224,48,0,0.08) 0%, transparent 65%);
   opacity: 0;
   transition: opacity 0.4s var(--ease);
   pointer-events: none;
@@ -1317,11 +1432,11 @@ button, input, textarea, select { font: inherit; }
   opacity: 1;
 }
 
-/* ── BUTTON LIFT — enhanced ──────────────────────────────────── */
+/* â”€â”€ BUTTON LIFT â€” enhanced â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .btn-gold:active    { transform: translateY(0) scale(0.98); }
 .btn-outline:active { transform: translateY(0) scale(0.98); }
 
-/* ── DESKTOP NAV ACTIVE STATE ────────────────────────────────── */
+/* â”€â”€ DESKTOP NAV ACTIVE STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .desktop-nav a.active {
   color: var(--rustic-gold);
 }
@@ -1329,7 +1444,7 @@ button, input, textarea, select { font: inherit; }
   transform: scaleX(1);
 }
 
-/* ── PROCESS CARD — refined hover ───────────────────────────── */
+/* â”€â”€ PROCESS CARD â€” refined hover â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .process-card:hover .process-num {
   background: orangered;
   color: var(--black);
@@ -1338,29 +1453,18 @@ button, input, textarea, select { font: inherit; }
   transition: background 0.3s, color 0.3s, box-shadow 0.3s;
 }
 
-/* ── SECTION TITLE — Space Grotesk refined ───────────────────── */
+/* â”€â”€ SECTION TITLE â€” Space Grotesk refined â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .section-title em {
   font-style: italic;
   color: orangered;
 }
 
-/* ── FOOTER TAGLINE — mono label ─────────────────────────────── */
+/* â”€â”€ FOOTER TAGLINE â€” mono label â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .footer-tagline {
   font-size: 0.85rem;
 }
 
-
-  .terminal-intro {
-    font-size: 0.72rem;
-  }
-  .proj-num {
-    font-size: 0.6rem;
-    top: 10px;
-    left: 12px;
-  }
-}
-
-/* ── REDUCED MOTION — disable all new animations ────────────── */
+/* â”€â”€ REDUCED MOTION â€” disable all new animations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (prefers-reduced-motion: reduce) {
   .fade-up,
   .terminal-cursor,
@@ -1373,3 +1477,51 @@ button, input, textarea, select { font: inherit; }
   }
   .fade-up { opacity: 1; transform: none; }
 }
+
+/* â”€â”€ SECTION DIVIDER GRADIENTS (visual flow between sections) â”€â”€ */
+.why-us::after,
+.stats-section::after,
+.services-section::after,
+.work-section::after,
+.testimonials-section::after,
+.process-section::after,
+.faq-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent 0%, rgba(224,48,0,0.025) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* â”€â”€ ENHANCED BUTTON GRADIENTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.btn-gold {
+  background: linear-gradient(135deg, #ff4500 0%, #e03000 60%, #c02800 100%);
+}
+.btn-gold:hover {
+  background: linear-gradient(135deg, #ff6622 0%, #e03000 60%, #c02800 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px var(--gold-glow), 0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* â”€â”€ CARD GLASS SHIMMER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.why-card,
+.service-card,
+.testi-card,
+.project-card {
+  background-image:
+    linear-gradient(145deg, rgba(255,255,255,0.03) 0%, transparent 50%, rgba(255,255,255,0.01) 100%),
+    linear-gradient(145deg, #141414 0%, #111111 60%, #0f0f0f 100%);
+  background-origin: border-box;
+}
+
+/* â”€â”€ SCROLL-LINKED SECTION TRANSITIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+@supports (animation-timeline: scroll()) {
+  .section {
+    animation: none;
+  }
+}
+
+
+
