@@ -17,11 +17,52 @@ window.addEventListener('load', () => {
   }, 1900);
 });
 
+/* ── LENIS SMOOTH SCROLL ────────────────────────────────────── */
+let lenis;
+if (!PRM && typeof Lenis !== 'undefined') {
+  lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    direction: 'vertical',
+    gestureDirection: 'vertical',
+    smoothWave: true,
+    syncTouch: false,
+  });
+
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  // Smooth scroll anchors using Lenis
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      const target = document.querySelector(targetId);
+      if (target) {
+        e.preventDefault();
+        lenis.scrollTo(target, {
+          offset: -80,
+          duration: 1.2,
+        });
+        
+        // Support closing mobile menu panel on anchor link click
+        if (typeof closeMenu === 'function') {
+          closeMenu();
+        }
+      }
+    });
+  });
+}
+
 /* ── SCROLL STATE (single rAF loop) ─────────────────────────── */
 const progressBar   = document.getElementById('scroll-progress');
 const header        = document.querySelector('[data-header]');
 
 const allSections = Array.from(document.querySelectorAll('section[id]'));
+const navLinks    = document.querySelectorAll('.desktop-nav a');
 
 let ticking = false;
 
@@ -42,7 +83,36 @@ function updateScroll() {
   /* Header scrolled state */
   if (header) header.classList.toggle('is-scrolled', scrollY > 30);
 
+  /* Scrollspy active class */
+  updateActiveNavLink(scrollY);
+
   ticking = false;
+}
+
+function updateActiveNavLink(scrollY) {
+  const scrollPosition = scrollY + 120; // offset for fixed header
+  let activeSectionId = '';
+  
+  // Handle bottom of page scroll override
+  const isAtBottom = (scrollY + window.innerHeight) >= (document.documentElement.scrollHeight - 20);
+  
+  if (isAtBottom && allSections.length > 0) {
+    activeSectionId = allSections[allSections.length - 1].id;
+  } else {
+    allSections.forEach(section => {
+      const top = section.getBoundingClientRect().top + scrollY;
+      const height = section.offsetHeight;
+      if (scrollPosition >= top && scrollPosition < top + height) {
+        activeSectionId = section.id;
+      }
+    });
+  }
+  
+  if (activeSectionId) {
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === `#${activeSectionId}`);
+    });
+  }
 }
 
 window.addEventListener('scroll', onScroll, { passive: true });
@@ -167,49 +237,110 @@ const countObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 counters.forEach(c => countObs.observe(c));
 
-/* ── PARALLAX HERO GLOW (smooth lerp) ─────────────────────── */
-const heroGlow = document.querySelector('.hero-glow');
+/* ── PARALLAX HERO ELEMENTS (glow + floating cards) ───────── */
 const heroSection = document.querySelector('.hero');
-if (!PRM && heroGlow && heroSection) {
-  let glowX = 30, glowY = 50, targetX = 30, targetY = 50;
-  let glowRaf = null;
+const heroGlow = document.querySelector('.hero-glow');
+const fc1 = document.querySelector('.fc1');
+const fc2 = document.querySelector('.fc2');
+const fc3 = document.querySelector('.fc3');
 
-  function lerpGlow() {
-    glowX += (targetX - glowX) * 0.06;
-    glowY += (targetY - glowY) * 0.06;
-    heroGlow.style.left = `${glowX}%`;
-    heroGlow.style.top  = `${glowY}%`;
-    glowRaf = requestAnimationFrame(lerpGlow);
+if (!PRM && heroSection) {
+  let glowX = 30, glowY = 50, targetX = 30, targetY = 50;
+  let fc1X = 0, fc1Y = 0, fc2X = 0, fc2Y = 0, fc3X = 0, fc3Y = 0;
+  let targetFc1X = 0, targetFc1Y = 0, targetFc2X = 0, targetFc2Y = 0, targetFc3X = 0, targetFc3Y = 0;
+  let parallaxRaf = null;
+
+  function lerpParallax() {
+    // Glow lerp
+    glowX += (targetX - glowX) * 0.08;
+    glowY += (targetY - glowY) * 0.08;
+    if (heroGlow) {
+      heroGlow.style.left = `${glowX}%`;
+      heroGlow.style.top  = `${glowY}%`;
+    }
+
+    // Float cards lerp (3D parallax translations)
+    fc1X += (targetFc1X - fc1X) * 0.08;
+    fc1Y += (targetFc1Y - fc1Y) * 0.08;
+    fc2X += (targetFc2X - fc2X) * 0.08;
+    fc2Y += (targetFc2Y - fc2Y) * 0.08;
+    fc3X += (targetFc3X - fc3X) * 0.08;
+    fc3Y += (targetFc3Y - fc3Y) * 0.08;
+
+    if (fc1) fc1.style.transform = `translate(${fc1X}px, ${fc1Y}px)`;
+    if (fc2) fc2.style.transform = `translate(${fc2X}px, ${fc2Y}px)`;
+    if (fc3) fc3.style.transform = `translate(${fc3X}px, ${fc3Y}px)`;
+
+    parallaxRaf = requestAnimationFrame(lerpParallax);
   }
 
   heroSection.addEventListener('mouseenter', () => {
-    glowRaf = requestAnimationFrame(lerpGlow);
+    parallaxRaf = requestAnimationFrame(lerpParallax);
   }, { passive: true });
+
   heroSection.addEventListener('mouseleave', () => {
-    cancelAnimationFrame(glowRaf);
-    // Drift back to center
+    cancelAnimationFrame(parallaxRaf);
+    // Reset to defaults
     targetX = 30; targetY = 50;
-    glowRaf = requestAnimationFrame(lerpGlow);
-    setTimeout(() => cancelAnimationFrame(glowRaf), 1000);
+    targetFc1X = 0; targetFc1Y = 0;
+    targetFc2X = 0; targetFc2Y = 0;
+    targetFc3X = 0; targetFc3Y = 0;
+    
+    // Lerp back to center
+    parallaxRaf = requestAnimationFrame(lerpParallax);
+    setTimeout(() => cancelAnimationFrame(parallaxRaf), 1200);
   }, { passive: true });
+
   heroSection.addEventListener('mousemove', e => {
     const rect = heroSection.getBoundingClientRect();
-    targetX = ((e.clientX - rect.left) / rect.width) * 100;
-    targetY = ((e.clientY - rect.top)  / rect.height) * 100;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Normalized coordinates (-0.5 to 0.5)
+    const nx = (x / rect.width) - 0.5;
+    const ny = (y / rect.height) - 0.5;
+
+    // Set glow targets
+    targetX = (x / rect.width) * 100;
+    targetY = (y / rect.height) * 100;
+
+    // Set float card offsets (different weights and directions for 3D depth feeling)
+    targetFc1X = nx * 35;  targetFc1Y = ny * 35;  // moves with mouse
+    targetFc2X = -nx * 45; targetFc2Y = -ny * 45; // moves opposite to mouse (feels deeper)
+    targetFc3X = nx * 20;  targetFc3Y = ny * 20;  // moves slightly with mouse
   }, { passive: true });
 }
 
-/* ── CARD MOUSE-GLOW SPOTLIGHT ─────────────────────────────── */
+/* ── CARD 3D TILT & GLOW ───────────────────────────────────── */
 if (!PRM) {
-  const glowCards = document.querySelectorAll('.why-card, .service-card, .project-card');
-  glowCards.forEach(card => {
+  const tiltCards = document.querySelectorAll('.why-card, .service-card, .project-card, .testi-card');
+  tiltCards.forEach(card => {
     card.addEventListener('mousemove', e => {
-      const r = card.getBoundingClientRect();
-      const x = ((e.clientX - r.left) / r.width)  * 100;
-      const y = ((e.clientY - r.top)  / r.height) * 100;
-      card.style.setProperty('--mx', `${x}%`);
-      card.style.setProperty('--my', `${y}%`);
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const w = rect.width;
+      const h = rect.height;
+      
+      // Calculate rotation angles based on cursor position relative to card center
+      // Max rotation: 8 degrees for a premium refined tactile feedback
+      const rotateX = ((h / 2 - y) / (h / 2)) * 8;
+      const rotateY = ((x - w / 2) / (w / 2)) * 8;
+      
+      // Apply 3D rotation
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+      
+      // Update mouse glow coordinates
+      const mx = (x / w) * 100;
+      const my = (y / h) * 100;
+      card.style.setProperty('--mx', `${mx}%`);
+      card.style.setProperty('--my', `${my}%`);
     }, { passive: true });
+    
+    card.addEventListener('mouseleave', () => {
+      // Smoothly reset rotation
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+    });
   });
 }
 
@@ -248,18 +379,8 @@ if (form) {
   });
 }
 
-/* ── DESKTOP NAV ACTIVE (fallback via IntersectionObserver) ─── */
-const navLinks = document.querySelectorAll('.desktop-nav a');
-const activeObs = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      navLinks.forEach(link => {
-        link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
-      });
-    }
-  });
-}, { threshold: 0.4 });
-allSections.forEach(s => activeObs.observe(s));
+/* ── DESKTOP NAV ACTIVE INITIALIZATION ─────────────────────── */
+// Handled reactively by the main tick listener updateActiveNavLink
 
 /* ── PROJECT CARD — number labels ──────────────────────────── */
 document.querySelectorAll('.project-card').forEach((card, i) => {
