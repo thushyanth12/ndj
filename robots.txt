@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://thushyanth12.github.io/ndj/sitemap.xml

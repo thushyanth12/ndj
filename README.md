@@ -1,130 +1,221 @@
-# Ninja Design Hub Portfolio
+# Ninja Design Hub — Portfolio
+
+> Premium freelance design & web agency portfolio. Built with vanilla HTML5, CSS3, and JavaScript — no framework required.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
-## 🎯 Project Overview
+## 📋 Project Overview
 
-**Ninja Design Hub** is a premium, modern portfolio website showcasing design work for a high‑end freelancing agency. The site is built with **vanilla HTML, CSS, and JavaScript**—no frameworks—while delivering a polished, dark‑themed UI using a **Black & Rustic Gold** color palette.
+**Ninja Design Hub** is a production-ready portfolio website for a high-end freelancing agency. It showcases web design, UI/UX, brand identity, and digital experience work using a **Black & Rustic Gold** design system.
 
-Key highlights:
-- Responsive layout that works beautifully on mobile, tablet, and desktop
-- Elegant hero section with animated scroll effects
-- Clean, reusable component classes for services, projects, testimonials, and contact form
-- SEO‑friendly markup with proper heading hierarchy, meta tags, and Open Graph data
-- Accessible design – high contrast, focus styles, and keyboard navigation
+The repository contains two distinct entry points:
 
----
+| File | Purpose |
+|------|---------|
+| `index.html` | **Ninja Design Hub** — primary portfolio site (dark theme, gold palette) |
+| `ndj.html` | **NDJ Agency** — alternate brand page (orange/black palette, pricing & AI focus) |
 
-## 🛠️ Tech Stack
-
-- **HTML5** – Semantic markup (`<header>`, `<section>`, `<article>`, etc.)
-- **CSS3** – Custom design system, CSS variables for theme colors, fluid grid, and micro‑animations
-- **JavaScript (ES6+)** – Light interactivity (hamburger menu, smooth scrolling, form validation)
-- **Git** – Version control, CI‑ready
+Both pages are production-ready and serve distinct branding purposes. `index.html` is the main entry point for deployment.
 
 ---
 
-## 🚀 Getting Started
+## ✨ Features
+
+- 🎨 **Premium dark UI** — Black & Rustic Gold design system with CSS custom properties
+- 🌀 **Smooth scrolling** — powered by [Lenis](https://github.com/darkroomengineering/lenis)
+- ⚡ **Animated hero** — word-split title, typewriter terminal intro, parallax floating cards
+- 📊 **Animated counters** — Intersection Observer-driven stat roll-up
+- 🖱️ **3D card tilt** — `mousemove`-driven perspective tilt on project / testimonial cards
+- 📱 **Fully responsive** — mobile-first layout across 375 px → 1440 px+
+- ♿ **Accessible** — skip link, ARIA labels, `focus-visible` outlines, semantic HTML5
+- 🔍 **SEO-ready** — unique titles, meta descriptions, Open Graph, Twitter Card, JSON-LD, sitemap, robots.txt
+- 📨 **Contact form** — client-side validation with success state
+- 🖼️ **Lazy-loaded images** — `loading="lazy"` + explicit `width`/`height` to prevent CLS
+- ⚙️ **React component** — optional `ProjectShowcase.jsx` for Next.js / Vite projects
+
+---
+
+## 🛠️ Technologies Used
+
+| Layer | Technology |
+|-------|-----------|
+| Markup | HTML5 (semantic elements) |
+| Styling | CSS3 (custom properties, Grid, Flexbox, `clamp()`) |
+| Scripting | Vanilla JavaScript ES6+ |
+| Smooth scroll | [Lenis 1.1.20](https://github.com/darkroomengineering/lenis) (CDN) |
+| Fonts | Google Fonts — Space Grotesk, Inter, Playfair Display, JetBrains Mono |
+| React (optional) | React 18 + Framer Motion + Lenis |
+| Version control | Git / GitHub |
+
+---
+
+## 📂 Folder Structure
+
+```
+ndj/                         ← repository root
+├── index.html               ← Main entry point (Ninja Design Hub portfolio)
+├── ndj.html                 ← NDJ Agency brand page (separate identity)
+├── styles.css               ← Complete design system for index.html
+├── script.js                ← All JS for index.html (scroll, menu, animations)
+├── robots.txt               ← Search crawler directives
+├── sitemap.xml              ← XML sitemap for SEO
+├── LICENSE                  ← MIT License
+├── README.md                ← This file
+├── assets/
+│   ├── logo.png             ← Ninja Design Hub logo
+│   ├── ndj.jpeg             ← NDJ brand image
+│   ├── hero-showcase.png    ← OG / hero image
+│   ├── project-florist.png  ← The Secret Florist project screenshot
+│   ├── project-dashboard.png
+│   ├── project-commerce.png
+│   ├── project-mobile.png
+│   ├── project-brand.png
+│   └── project-saas.png
+├── react/
+│   ├── ProjectShowcase.jsx  ← Drop-in React component (Framer Motion)
+│   └── README.md            ← React component usage guide
+└── scripts/
+    ├── static-server.mjs    ← Local dev server (Node.js)
+    └── generate-assets.ps1  ← PowerShell asset generation helper
+```
+
+---
+
+## 🚀 Installation
 
 ### Prerequisites
-- A modern web browser (Chrome, Firefox, Edge, Safari)
-- Node.js (optional, only for running a local dev server)
 
-### Installation
+- A modern web browser (Chrome 90+, Firefox 88+, Edge 90+, Safari 14+)
+- **Node.js 18+** — only required if you want a local dev server
+
+### Clone the repository
+
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/ninja-design-hub.git
-
-# Navigate to the project folder
-cd ninja-design-hub
+git clone https://github.com/thushyanth12/ndj.git
+cd ndj
 ```
 
-### Development Server (optional)
-If you prefer hot‑reloading while you develop:
+---
+
+## 💻 Running Locally
+
+### Option A — Open directly (zero dependencies)
+
+Double-click `index.html` — the site works entirely from the file system.
+
+### Option B — Node.js dev server (recommended, avoids CORS issues)
+
 ```bash
-# Using npm's serve package (install globally if needed)
+node scripts/static-server.mjs
+```
+
+Then open **http://localhost:3000** in your browser.
+
+### Option C — npm `serve` (install once globally)
+
+```bash
 npm install -g serve
-serve -s .
-```
-Open `http://localhost:5000` in your browser.
-
----
-
-## 📂 Project Structure
-```
-📁 root
-├─ index.html          # Main entry point
-├─ assets/             # Images, fonts, icons
-├─ css/
-│   ├─ base.css       # Reset & base styles
-│   ├─ layout.css     # Grid & layout utilities
-│   └─ theme.css      # Dark theme, color variables
-├─ js/
-│   └─ main.js        # UI interactions (menu, scroll effects)
-└─ README.md           # This file
+serve .
 ```
 
----
-
-## 🎨 Design System
-- **Colors** (CSS variables in `theme.css`):
-  - `--color-bg`: `hsl(0, 0%, 5%)` (deep black)
-  - `--color-primary`: `hsl(30, 100%, 45%)` (rustic gold)
-  - `--color-accent`: `hsl(30, 90%, 55%)`
-  - `--color-muted`: `hsl(0, 0%, 30%)`
-- **Typography** – Google Font **"Outfit"** for headings and **"Inter"** for body text.
-- **Micro‑animations** – `fade-in`, `slide-up`, and subtle hover glows using `transition` and `@keyframes`.
+Open the URL printed in the terminal (usually **http://localhost:3000**).
 
 ---
 
-## 📈 SEO & Accessibility
-- Semantic HTML with a single `<h1>` per page
-- Meta tags: `title`, `description`, `viewport`, `robots`
-- Open Graph tags for social sharing
-- Alt text for all images
-- Keyboard‑focusable interactive elements
+## 🌐 Deployment
+
+The site consists of static files — deploy to any static host with zero build step.
+
+### GitHub Pages (recommended)
+
+```bash
+# Push the main branch — GitHub Pages serves index.html automatically
+git add .
+git commit -m "feat: update portfolio"
+git push origin main
+```
+
+Enable Pages under **Settings → Pages → Branch: main / root**.
+
+Live URL: `https://thushyanth12.github.io/ndj/`
+
+### Netlify / Vercel
+
+1. Connect the repository.
+2. Set **Publish directory** to `.` (root).
+3. No build command needed.
+
+### Other hosts (AWS S3, Cloudflare Pages, Firebase Hosting)
+
+Upload all files at the root level. Ensure `index.html` is served as the default document.
 
 ---
 
-## 📦 Deployment
-The site consists of static files, so you can host it on any static‑site provider:
-- GitHub Pages
-- Netlify
-- Vercel (static output)
-- AWS S3 + CloudFront
+## 🎨 Customization
 
-Simply push the `main` branch; the hosting service will serve the files.
+### Brand colours
 
----
+Edit the CSS custom properties in `styles.css`:
 
-## 🧰 Scripts & Commands
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Starts a local dev server (if you install `serve` locally) |
-| `git push` | Deploys the latest changes |
-| `git status` | Checks repository status |
+```css
+:root {
+  --rustic-gold:     #e03000;  /* primary accent */
+  --muted-rustic-gold: #ff4500;
+  --deep-gold:       #c02800;
+  --text-main:       #f5f0ee;
+  --text-muted:      #a8a8a8;
+  --black:           #050505;
+}
+```
 
----
+### Typography
 
-## 🤝 Contributing
-Contributions are welcome! Please:
-1. Fork the repo
-2. Create a feature branch (`git checkout -b feature/awesome-feature`)
-3. Commit your changes with clear messages
-4. Open a Pull Request
+Swap Google Font families in the `<link>` tag inside `index.html` and update the `font-family` references in `styles.css`.
 
----
+### Projects
 
-## 📜 License
-This project is licensed under the **MIT License** – see the `LICENSE` file for details.
+Each project card lives in the **Selected Work** section of `index.html`. Duplicate an `<article class="project-card">` block and update:
+- `src` — point to your image in `assets/`
+- `alt` — descriptive alt text
+- Category tags, title, description, and tech stack spans
 
----
+### Contact email
 
-## ✨ Acknowledgments
-- Inspired by premium agency templates and modern UI trends
-- Fonts from **Google Fonts**
-- Icons from **Font Awesome**
+Replace `hello@ninjadesignhub.com` in `index.html` (contact section `<a href="mailto:…">` and the form action).
+
+### Social links
+
+Update the `href` values in the contact section and footer of `index.html`.
 
 ---
 
-*Built with love by the Ninja Design Hub team.*
+## 📸 Screenshots
+
+The portfolio itself is the screenshot — open `index.html` in a browser to see the live design.
+
+Key sections: Hero → Why Us → Stats → Trusted Brands → Services → Selected Work → Testimonials → Process → FAQ → Contact
+
+---
+
+## 📝 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+```
+Copyright (c) 2026 Thushyanth
+```
+
+---
+
+## 👤 Author
+
+**Thushyanth**
+
+- GitHub: [@thushyanth12](https://github.com/thushyanth12)
+- Repository: [github.com/thushyanth12/ndj](https://github.com/thushyanth12/ndj)
+
+---
+
+*Crafting digital experiences for brands that refuse to be ordinary.*

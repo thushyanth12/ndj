@@ -1658,5 +1658,25 @@ html {
   will-change: transform;
 }
 
-
-
+/* ── PREFERS-REDUCED-MOTION ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal, .fade-up {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .hero-title .word {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .brands-inner { animation: none !important; }
+  .float-card .float-card-inner { animation: none !important; }
+  .loader-fill { animation: none !important; width: 100%; }
+  .scroll-cue i { animation: none !important; }
+}
