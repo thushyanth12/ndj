@@ -32,7 +32,7 @@
 /* â”€â”€ RESET â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
   /* Offset anchor scrolls so content clears the fixed header */
@@ -906,6 +906,7 @@ button, input, textarea, select { font: inherit; }
   resize: vertical;
   transition: border-color 0.25s, box-shadow 0.25s;
   -webkit-appearance: none;
+  appearance: none;
 }
 .form-group select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23e03000' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
@@ -1115,10 +1116,10 @@ button, input, textarea, select { font: inherit; }
     flex-direction: column; align-items: stretch;
     width: 100%; gap: 10px;
   }
-  .hero-actions .btn-gold,
+  .hero-actions .btn-gold {
+    width: 100%; justify-content: center; min-height: 48px;
+  }
   .hero-actions .btn-outline {
-    color: rgb(253, 250, 244);
-    background-color: orangered;
     width: 100%; justify-content: center; min-height: 48px;
   }
   .scroll-cue { display: none; }
@@ -1414,6 +1415,14 @@ button, input, textarea, select { font: inherit; }
 .testi-card,
 .process-card {
   position: relative;
+}
+/* Only clip cards that need it — process-card must remain overflow: visible */
+.why-card,
+.service-card,
+.testi-card {
+  overflow: hidden;
+}
+.project-card {
   overflow: hidden;
 }
 .why-card::before,
