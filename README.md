@@ -8,7 +8,7 @@
 
 ## 📋 Project Overview
 
-**Ninja Design Hub** is a production-ready portfolio website for a high-end freelancing agency. It showcases web design, UI/UX, brand identity, and digital experience work using a **Black & Rustic Gold** design system.
+**Ninja Design Hub** is a production-ready portfolio website for a high-end freelancing agency. It showcases web design, UI/UX, brand identity, and digital experience work using a **Black & Flame Orange** design system.
 
 The repository contains two distinct entry points:
 
@@ -23,7 +23,7 @@ Both pages are production-ready and serve distinct branding purposes. `index.htm
 
 ## ✨ Features
 
-- 🎨 **Premium dark UI** — Black & Rustic Gold design system with CSS custom properties
+- 🎨 **Premium dark UI** — Black & Flame Orange design system with CSS custom properties
 - 🌀 **Smooth scrolling** — powered by [Lenis](https://github.com/darkroomengineering/lenis)
 - ⚡ **Animated hero** — word-split title, typewriter terminal intro, parallax floating cards
 - 📊 **Animated counters** — Intersection Observer-driven stat roll-up

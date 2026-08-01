@@ -1,16 +1,16 @@
 /* ============================================================
-   NINJA DESIGN HUB â€” Premium Black & Rustic Gold
+   NINJA DESIGN HUB — Premium Black & Flame Orange
    ============================================================ */
 
 :root {
   --black: #050505;
   --dark-black: #0a0a0a;
   --soft-black: #111111;
-  --rustic-gold: #e03000;
-  --muted-rustic-gold: #ff4500;
-  --deep-gold: #c02800;
-  --gold-border: rgba(224,48,0,0.35);
-  --gold-glow: rgba(224,48,0,0.28);
+  --rustic-gold: #e03000; /* flame orange accent */
+  --muted-rustic-gold: #ff4500; /* vibrant flame orange */
+  --deep-gold: #c02800; /* dark flame orange/red */
+  --gold-border: rgba(224,48,0,0.35); /* flame orange border */
+  --gold-glow: rgba(224,48,0,0.28); /* flame orange glow */
   --gold-glow-strong: rgba(224,48,0,0.18);
   --text-main: #f5f0ee;
   --text-muted: #a8a8a8;
@@ -100,7 +100,7 @@ button, input, textarea, select { font: inherit; }
 .loader-fill {
   height: 100%; width: 0%; border-radius: 2px;
   background: linear-gradient(90deg, var(--rustic-gold), var(--muted-rustic-gold));
-  animation: loaderBar 1.8s var(--ease-out) forwards;
+  animation: loaderBar 0.5s var(--ease-out) forwards;
 }
 @keyframes loaderBar { to { width: 100%; } }
 @keyframes loaderPulse { from { opacity: 0.4; } to { opacity: 1; } }
@@ -387,7 +387,15 @@ button, input, textarea, select { font: inherit; }
 .fc3 .float-card-inner { animation: floatA 4.5s ease-in-out infinite 0.8s; }
 @keyframes floatA { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
 @keyframes floatB { 0%,100%{transform:translateY(0)} 50%{transform:translateY(12px)} }
-.fc-icon { font-size: 1.8rem; flex-shrink: 0; }
+.fc-icon {
+  flex-shrink: 0;
+  color: orangered;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
 .fc-label { font-size: 0.82rem; font-weight: 700; color: var(--text-main); margin-bottom: 2px; }
 .fc-sub { font-size: 0.72rem; color: var(--text-muted); }
 .hero-ring {
@@ -442,8 +450,13 @@ button, input, textarea, select { font: inherit; }
   transform: translateY(-6px);
 }
 .why-icon {
-  font-size: 1.6rem; color: orangered;
+  color: orangered;
   margin-bottom: 18px; line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
 }
 .why-card h3 {
   font-family: 'Space Grotesk', sans-serif;
@@ -546,9 +559,13 @@ button, input, textarea, select { font: inherit; }
   transform: translateY(-6px);
 }
 .sc-icon {
-  font-size: 2rem;
   margin-bottom: 18px;
-  filter: grayscale(0);
+  color: orangered;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
 }
 .service-card h3 {
   font-family: 'Space Grotesk', sans-serif;
@@ -952,6 +969,48 @@ button, input, textarea, select { font: inherit; }
 .form-success strong { font-size: 0.9rem; color: var(--text-main); display: block; margin-bottom: 2px; }
 .form-success p { font-size: 0.82rem; color: var(--text-muted); margin: 0; }
 
+/* -- FORM DEMO NOTE -------------------------------------- */
+.form-demo-note {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+  padding: 10px 14px;
+  border: 1px dashed var(--gold-border);
+  border-radius: 6px;
+  text-align: center;
+}
+
+/* -- FORM INLINE ERRORS ---------------------------------- */
+.form-error {
+  display: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #f44336;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+.form-error::before {
+  content: '\26A0';
+  font-size: 0.85rem;
+}
+.form-error.show {
+  display: flex;
+}
+.form-group.has-error input,
+.form-group.has-error textarea {
+  border-color: #f44336;
+  box-shadow: inset 3px 0 0 #f44336;
+}
+.form-group.has-error input:focus,
+.form-group.has-error textarea:focus {
+  border-color: #f44336;
+  box-shadow: inset 3px 0 0 #f44336, 0 0 0 3px rgba(244,67,54,0.2);
+}
+
 /* -- FOOTER -------------------------------------- */
 .site-footer {
   background: linear-gradient(180deg, #0a0a0a 0%, #070200 60%, #050505 100%);
@@ -1258,21 +1317,10 @@ button, input, textarea, select { font: inherit; }
   .why-card, .service-card { padding: 18px 14px; }
   .contact-form { padding: 16px; }
   .float-card { padding: 12px 14px; }
-  .fc-icon { font-size: 1.4rem; }
+  .fc-icon { width: 24px; height: 24px; }
 }
 
-/* -- REDUCED MOTION ------------------------------ */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-  .reveal, .hero-title .word { opacity: 1; transform: none; }
-  .brands-inner { animation: none; }
-  .float-card { animation: none; }
-}
+/* -- REDUCED MOTION (consolidated at end of file) -- */
 
 /* -- STAT NUMBER FIX ----------------------------- */
 .stat-card {
@@ -1477,18 +1525,7 @@ button, input, textarea, select { font: inherit; }
 }
 
 /* â”€â”€ REDUCED MOTION â€” disable all new animations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-@media (prefers-reduced-motion: reduce) {
-  .fade-up,
-  .terminal-cursor,
-  .badge-dot::after,
-  #scroll-progress {
-    animation: none !important;
-    transition: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-  .fade-up { opacity: 1; transform: none; }
-}
+@media (prefers-reduced-motion: reduce) {}
 
 /* â”€â”€ SECTION DIVIDER GRADIENTS (visual flow between sections) â”€â”€ */
 .why-us::after,

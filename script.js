@@ -4,20 +4,30 @@
 
 'use strict';
 
-/* ── PREFERS-REDUCED-MOTION ────────────────────────────────── */
+/* -- PREFERS-REDUCED-MOTION --------------------------------- */
 const PRM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ── LOADER ─────────────────────────────────────────────────── */
+/* -- LOADER ------------------------------------------------- */
 const loader = document.getElementById('loader');
 document.body.style.overflow = 'hidden';
-window.addEventListener('load', () => {
-  setTimeout(() => {
+
+/* Safety fallback: guarantee body overflow is restored even if scripts fail */
+setTimeout(function () {
+  if (loader && !loader.classList.contains('hidden')) {
     loader.classList.add('hidden');
     document.body.style.overflow = '';
-  }, 1900);
+  }
+}, 4000);
+
+window.addEventListener('load', function () {
+  var delay = PRM ? 0 : 600;
+  setTimeout(function () {
+    loader.classList.add('hidden');
+    document.body.style.overflow = '';
+  }, delay);
 });
 
-/* ── LENIS SMOOTH SCROLL ────────────────────────────────────── */
+/* -- LENIS SMOOTH SCROLL ------------------------------------ */
 let lenis;
 if (!PRM && typeof Lenis !== 'undefined') {
   lenis = new Lenis({
@@ -47,7 +57,7 @@ if (!PRM && typeof Lenis !== 'undefined') {
           offset: -80,
           duration: 1.2,
         });
-        
+
         // Support closing mobile menu panel on anchor link click
         if (typeof closeMenu === 'function') {
           closeMenu();
@@ -57,7 +67,7 @@ if (!PRM && typeof Lenis !== 'undefined') {
   });
 }
 
-/* ── SCROLL STATE (single rAF loop) ─────────────────────────── */
+/* -- SCROLL STATE (single rAF loop) ------------------------- */
 const progressBar   = document.getElementById('scroll-progress');
 const header        = document.querySelector('[data-header]');
 
@@ -118,22 +128,35 @@ function updateActiveNavLink(scrollY) {
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll(); // run once on load
 
-/* ── MOBILE MENU ────────────────────────────────────────────── */
+/* -- MOBILE MENU -------------------------------------------- */
 const menuToggles   = document.querySelectorAll('[data-menu-toggle]');
 const mobilePanel   = document.querySelector('[data-mobile-panel]');
 const mobileOverlay = document.querySelector('[data-mobile-overlay]');
+const mobileCloseBtn = mobilePanel ? mobilePanel.querySelector('.mobile-close') : null;
+const hamburgerBtn   = document.querySelector('.menu-toggle[data-menu-toggle]');
 
 const openMenu = () => {
   mobilePanel.classList.add('is-open');
   mobileOverlay.classList.add('is-open');
-  menuToggles[0].setAttribute('aria-expanded', 'true');
   document.body.style.overflow = 'hidden';
+  // Update aria-expanded on all toggles
+  menuToggles.forEach(t => t.setAttribute('aria-expanded', 'true'));
+  // Move focus to close button for keyboard users
+  if (mobileCloseBtn) {
+    mobileCloseBtn.focus();
+  }
 };
+
 const closeMenu = () => {
   mobilePanel.classList.remove('is-open');
   mobileOverlay.classList.remove('is-open');
-  menuToggles.forEach(t => t.setAttribute('aria-expanded', 'false'));
   document.body.style.overflow = '';
+  // Update aria-expanded on all toggles
+  menuToggles.forEach(t => t.setAttribute('aria-expanded', 'false'));
+  // Return focus to hamburger button for keyboard users
+  if (hamburgerBtn) {
+    hamburgerBtn.focus();
+  }
 };
 
 menuToggles.forEach(toggle => {
@@ -141,10 +164,19 @@ menuToggles.forEach(toggle => {
     mobilePanel.classList.contains('is-open') ? closeMenu() : openMenu();
   });
 });
-mobileOverlay.addEventListener('click', closeMenu);
-mobilePanel.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+if (mobileOverlay) mobileOverlay.addEventListener('click', closeMenu);
+if (mobilePanel) {
+  mobilePanel.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+}
 
-/* ── HERO TITLE WORD SPLIT ──────────────────────────────────── */
+// Escape key closes mobile menu
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && mobilePanel && mobilePanel.classList.contains('is-open')) {
+    closeMenu();
+  }
+});
+
+/* -- HERO TITLE WORD SPLIT ---------------------------------- */
 const splitEl = document.querySelector('[data-split]');
 if (splitEl) {
   const words = splitEl.textContent.trim().split(/\s+/);
@@ -153,7 +185,7 @@ if (splitEl) {
   ).join(' ');
 }
 
-/* ── TERMINAL CURSOR ────────────────────────────────────────── */
+/* -- TERMINAL CURSOR ---------------------------------------- */
 const terminalLine = document.getElementById('terminal-line');
 if (terminalLine) {
   const phrases = [
@@ -180,7 +212,7 @@ if (terminalLine) {
   else terminalLine.textContent = phrases[0];
 }
 
-/* ── INTERSECTION OBSERVER — .reveal (staggered by group) ───── */
+/* -- INTERSECTION OBSERVER: .reveal (staggered by group) ---- */
 const revealObs = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -190,18 +222,18 @@ const revealObs = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.06, rootMargin: '0px 0px -4% 0px' });
 
-// Group siblings in same parent for stagger — feels more orchestrated
+// Group siblings in same parent for stagger
 document.querySelectorAll('.reveal').forEach((el) => {
   const siblings = el.parentElement
     ? Array.from(el.parentElement.querySelectorAll('.reveal'))
     : [el];
   const idx = siblings.indexOf(el);
-  // Max 5 items stagger, 70ms step — smooth without feeling slow
+  // Max 5 items stagger, 70ms step
   el.style.transitionDelay = `${Math.min(idx, 4) * 70}ms`;
   revealObs.observe(el);
 });
 
-/* ── INTERSECTION OBSERVER — .fade-up (new reusable class) ──── */
+/* -- INTERSECTION OBSERVER: .fade-up (reusable class) ------- */
 const fadeUpObs = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -216,7 +248,7 @@ document.querySelectorAll('.fade-up').forEach((el, i) => {
   fadeUpObs.observe(el);
 });
 
-/* ── STAT COUNTER ───────────────────────────────────────────── */
+/* -- STAT COUNTER ------------------------------------------- */
 const counters = document.querySelectorAll('.stat-num[data-count]');
 const countObs = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -237,7 +269,7 @@ const countObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 counters.forEach(c => countObs.observe(c));
 
-/* ── PARALLAX HERO ELEMENTS (glow + floating cards) ───────── */
+/* -- PARALLAX HERO ELEMENTS (glow + floating cards) --------- */
 const heroSection = document.querySelector('.hero');
 const heroGlow = document.querySelector('.hero-glow');
 const fc1 = document.querySelector('.fc1');
@@ -304,14 +336,14 @@ if (!PRM && heroSection) {
     targetX = (x / rect.width) * 100;
     targetY = (y / rect.height) * 100;
 
-    // Set float card offsets (different weights and directions for 3D depth feeling)
-    targetFc1X = nx * 35;  targetFc1Y = ny * 35;  // moves with mouse
-    targetFc2X = -nx * 45; targetFc2Y = -ny * 45; // moves opposite to mouse (feels deeper)
-    targetFc3X = nx * 20;  targetFc3Y = ny * 20;  // moves slightly with mouse
+    // Set float card offsets (different weights for 3D depth)
+    targetFc1X = nx * 35;  targetFc1Y = ny * 35;
+    targetFc2X = -nx * 45; targetFc2Y = -ny * 45;
+    targetFc3X = nx * 20;  targetFc3Y = ny * 20;
   }, { passive: true });
 }
 
-/* ── CARD 3D TILT & GLOW ───────────────────────────────────── */
+/* -- CARD 3D TILT & GLOW ------------------------------------ */
 if (!PRM) {
   const tiltCards = document.querySelectorAll('.why-card, .service-card, .project-card, .testi-card');
   tiltCards.forEach(card => {
@@ -322,12 +354,10 @@ if (!PRM) {
       const w = rect.width;
       const h = rect.height;
       
-      // Calculate rotation angles based on cursor position relative to card center
-      // Max rotation: 8 degrees for a premium refined tactile feedback
+      // Calculate rotation angles (max 8 degrees)
       const rotateX = ((h / 2 - y) / (h / 2)) * 8;
       const rotateY = ((x - w / 2) / (w / 2)) * 8;
       
-      // Apply 3D rotation
       card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
       
       // Update mouse glow coordinates
@@ -338,35 +368,108 @@ if (!PRM) {
     }, { passive: true });
     
     card.addEventListener('mouseleave', () => {
-      // Smoothly reset rotation
       card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
     });
   });
 }
 
-/* ── CONTACT FORM ───────────────────────────────────────────── */
+/* -- CONTACT FORM ------------------------------------------- */
 const form        = document.getElementById('contact-form');
 const formSuccess = document.getElementById('form-success');
 const submitBtn   = document.getElementById('form-submit-btn');
 
+/**
+ * Show an inline error for a field.
+ * Adds visual class to the parent .form-group, shows the error span,
+ * and sets aria-invalid on the field.
+ */
+function showFieldError(field, errorId, message) {
+  const group = field.closest('.form-group');
+  if (group) group.classList.add('has-error');
+  field.setAttribute('aria-invalid', 'true');
+  const errorEl = document.getElementById(errorId);
+  if (errorEl) {
+    if (message) errorEl.textContent = message;
+    errorEl.classList.add('show');
+  }
+}
+
+/**
+ * Clear an inline error for a field.
+ */
+function clearFieldError(field, errorId) {
+  const group = field.closest('.form-group');
+  if (group) group.classList.remove('has-error');
+  field.removeAttribute('aria-invalid');
+  field.style.borderColor = '';
+  const errorEl = document.getElementById(errorId);
+  if (errorEl) errorEl.classList.remove('show');
+}
+
 if (form) {
+  // Clear errors on input
+  const fieldErrorMap = {
+    'field-name': 'error-name',
+    'field-email': 'error-email',
+    'field-message': 'error-message',
+  };
+
+  Object.keys(fieldErrorMap).forEach(function (fieldId) {
+    var field = document.getElementById(fieldId);
+    if (field) {
+      field.addEventListener('input', function () {
+        clearFieldError(field, fieldErrorMap[fieldId]);
+      });
+    }
+  });
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const required = form.querySelectorAll('[required]');
-    let valid = true;
-    required.forEach(field => {
-      field.style.borderColor = '';
-      if (!field.value.trim()) { field.style.borderColor = '#e53935'; valid = false; }
+
+    // Clear all previous errors
+    Object.keys(fieldErrorMap).forEach(function (fieldId) {
+      var field = document.getElementById(fieldId);
+      if (field) clearFieldError(field, fieldErrorMap[fieldId]);
     });
+
+    let valid = true;
+
+    // Validate name
+    const nameField = document.getElementById('field-name');
+    if (nameField && !nameField.value.trim()) {
+      showFieldError(nameField, 'error-name', 'Please enter your name.');
+      valid = false;
+    }
+
+    // Validate email
     const emailField = document.getElementById('field-email');
     const emailRx    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailField && !emailRx.test(emailField.value)) {
-      emailField.style.borderColor = '#e53935'; valid = false;
+    if (emailField) {
+      if (!emailField.value.trim()) {
+        showFieldError(emailField, 'error-email', 'Please enter your email address.');
+        valid = false;
+      } else if (!emailRx.test(emailField.value)) {
+        showFieldError(emailField, 'error-email', 'Please enter a valid email address.');
+        valid = false;
+      }
     }
-    if (!valid) return;
+
+    // Validate message
+    const messageField = document.getElementById('field-message');
+    if (messageField && !messageField.value.trim()) {
+      showFieldError(messageField, 'error-message', 'Please enter a message.');
+      valid = false;
+    }
+
+    if (!valid) {
+      // Focus the first invalid field
+      var firstInvalid = form.querySelector('[aria-invalid="true"]');
+      if (firstInvalid) firstInvalid.focus();
+      return;
+    }
 
     const label = submitBtn.querySelector('.btn-label');
-    label.textContent = 'Sending…';
+    label.textContent = 'Sending\u2026';
     submitBtn.disabled = true;
 
     setTimeout(() => {
@@ -379,10 +482,10 @@ if (form) {
   });
 }
 
-/* ── DESKTOP NAV ACTIVE INITIALIZATION ─────────────────────── */
+/* -- DESKTOP NAV ACTIVE INITIALIZATION ---------------------- */
 // Handled reactively by the main tick listener updateActiveNavLink
 
-/* ── PROJECT CARD — number labels ──────────────────────────── */
+/* -- PROJECT CARD: number labels ---------------------------- */
 document.querySelectorAll('.project-card').forEach((card, i) => {
   const num = card.querySelector('.proj-num');
   if (num) num.textContent = String(i + 1).padStart(2, '0');
