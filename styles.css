@@ -1,4 +1,26 @@
 /* ============================================================
+   ETHNOCENTRIC FONT DEFINITIONS
+   ============================================================ */
+@font-face {
+  font-family: 'Ethnocentric';
+  src: local('Ethnocentric'), local('Ethnocentric Rg'),
+       url('assets/fonts/ethnocentric.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/6220/ethnocentric%20rg.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Ethnocentric Rg';
+  src: local('Ethnocentric Rg'), local('Ethnocentric'),
+       url('assets/fonts/ethnocentric.woff') format('woff'),
+       url('https://fonts.cdnfonts.com/s/6220/ethnocentric%20rg.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
    NINJA DESIGN HUB — Premium Black & Flame Orange
    ============================================================ */
 
@@ -300,7 +322,7 @@ button, input, textarea, select { font: inherit; }
 /* â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .hero {
   position: relative; min-height: 100svh;
-  display: grid; grid-template-columns: 1fr 1fr;
+  display: grid; grid-template-columns: 1.15fr 0.85fr;
   align-items: center; overflow: hidden;
   padding: 0 clamp(18px, 5vw, 56px);
   padding-top: 100px;
@@ -340,13 +362,19 @@ button, input, textarea, select { font: inherit; }
   animation: blink 2s ease-in-out infinite;
 }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.hero-br-desktop {
+  display: block;
+}
 .hero-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(2.4rem, 5.5vw, 4.8rem);
-  font-weight: 700;
-  line-height: 1.06; color: var(--text-main);
-  letter-spacing: -0.03em;
-  margin-bottom: 22px; max-width: 680px;
+  font-family: 'Ethnocentric', 'Ethnocentric Rg', sans-serif;
+  font-size: clamp(2rem, 3.4vw, 3.8rem);
+  font-weight: 400;
+  line-height: 1.06;
+  color: var(--text-main);
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  max-width: 720px;
 }
 .hero-title .word {
   display: inline-block;
@@ -871,17 +899,15 @@ button, input, textarea, select { font: inherit; }
   margin-bottom: 28px;
 }
 .contact-info { display: flex; flex-direction: column; gap: 16px; }
-.contact-email {
+.contact-follow-label {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--rustic-gold);
   border-bottom: 1px solid var(--gold-border);
-  padding-bottom: 4px;
-  transition: color 0.2s, border-color 0.2s;
+  padding-bottom: 8px;
 }
-.contact-email:hover { color: var(--muted-rustic-gold); border-color: var(--rustic-gold); }
 .contact-socials {
   display: flex; gap: 20px; flex-wrap: wrap;
 }
@@ -1077,7 +1103,7 @@ button, input, textarea, select { font: inherit; }
 /* â”€â”€ â‰¥ 1400px  Wide desktop â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (min-width: 1400px) {
   :root { --max: 1320px; }
-  .hero-title { font-size: 5rem; }
+  .hero-title { font-size: clamp(2.2rem, 3.4vw, 3.8rem); max-width: 760px; }
   .section-title { font-size: 3.2rem; }
   .why-grid { gap: 24px; }
   .services-grid { gap: 22px; }
@@ -1125,7 +1151,7 @@ button, input, textarea, select { font: inherit; }
   .hero-visuals { height: 340px; }
   .r1 { width: 220px; height: 220px; }
   .r2 { width: 320px; height: 320px; }
-  .hero-title { font-size: clamp(2.2rem, 5vw, 3.8rem); }
+  .hero-title { font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.08; letter-spacing: 0.025em; max-width: 580px; }
 
   .why-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
   .services-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -1143,6 +1169,12 @@ button, input, textarea, select { font: inherit; }
   /* Hero, Nav and other components fall back to the <= 1024px rules. 
      We specify tablet portrait customizations here. */
   .hero-visuals { height: 380px; }
+  .hero-title {
+    font-size: clamp(1.4rem, 3.2vw, 2.1rem);
+    line-height: 1.08;
+    letter-spacing: 0.02em;
+    max-width: 440px;
+  }
   .stats-grid { grid-template-columns: repeat(4, 1fr); }
   .testi-grid { grid-template-columns: repeat(2, 1fr); max-width: none; }
   .work-grid { grid-template-columns: repeat(2, 1fr); max-width: none; }
@@ -1164,10 +1196,13 @@ button, input, textarea, select { font: inherit; }
     gap: 0;
   }
   .hero-visuals { display: none; }
+  .hero-br-desktop { display: none; }
   .hero-title {
-    font-size: clamp(2rem, 9vw, 2.8rem);
-    letter-spacing: -0.025em;
-    margin-bottom: 14px;
+    font-size: clamp(1.25rem, 5.2vw, 1.85rem);
+    line-height: 1.12;
+    letter-spacing: 0.02em;
+    margin-bottom: 18px;
+    max-width: 100%;
   }
   .hero-subtitle { font-size: 0.92rem; line-height: 1.7; margin-bottom: 28px; }
   .hero-badge { font-size: 0.72rem; margin-bottom: 20px; }
@@ -1297,7 +1332,8 @@ button, input, textarea, select { font: inherit; }
 /* â”€â”€ â‰¤ 375px  Small phone â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 375px) {
   .hero-title {
-    font-size: clamp(1.75rem, 8vw, 2.2rem);
+    font-size: clamp(1.15rem, 5.8vw, 1.45rem);
+    letter-spacing: 0.015em;
   }
   .section-title {
     font-size: clamp(1.4rem, 7vw, 1.8rem);
@@ -1341,10 +1377,14 @@ button, input, textarea, select { font: inherit; }
 
 /* â”€â”€ TYPOGRAPHY UPGRADE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .section-title,
-.hero-title,
 .contact-copy h2 {
   font-family: 'Audiowide', cursive;
   letter-spacing: -0.02em;
+}
+
+.hero-title {
+  font-family: 'Ethnocentric', 'Ethnocentric Rg', sans-serif;
+  letter-spacing: 0.03em;
 }
 
 .eyebrow,

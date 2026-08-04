@@ -179,10 +179,22 @@ document.addEventListener('keydown', function (e) {
 /* -- HERO TITLE WORD SPLIT ---------------------------------- */
 const splitEl = document.querySelector('[data-split]');
 if (splitEl) {
-  const words = splitEl.textContent.trim().split(/\s+/);
-  splitEl.innerHTML = words.map((w, i) =>
-    `<span class="word" style="animation-delay:${i * 0.09 + 0.3}s">${w}</span>`
-  ).join(' ');
+  let wordCount = 0;
+  let newHtml = '';
+  splitEl.childNodes.forEach(node => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const words = node.textContent.trim().split(/\s+/);
+      words.forEach(w => {
+        if (w) {
+          newHtml += `<span class="word" style="animation-delay:${wordCount * 0.09 + 0.3}s">${w}</span> `;
+          wordCount++;
+        }
+      });
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      newHtml += node.outerHTML;
+    }
+  });
+  if (newHtml.trim()) splitEl.innerHTML = newHtml;
 }
 
 /* -- TERMINAL CURSOR ---------------------------------------- */
