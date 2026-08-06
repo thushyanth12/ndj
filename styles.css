@@ -319,6 +319,12 @@ button, input, textarea, select { font: inherit; }
 }
 .reveal.is-visible { opacity: 1; transform: translateY(0); will-change: auto; }
 
+/* Float cards are driven per-frame by the JS parallax loop —
+   only animate opacity, never transform, or the cards lag behind the mouse. */
+.float-card {
+  transition: opacity 0.65s var(--ease-out);
+}
+
 /* â”€â”€ HERO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .hero {
   position: relative; min-height: 100svh;
@@ -1565,7 +1571,7 @@ button, input, textarea, select { font: inherit; }
 }
 
 /* â”€â”€ REDUCED MOTION â€” disable all new animations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-@media (prefers-reduced-motion: reduce) {}
+/* Reduced-motion preferences are handled in the full block below. */
 
 /* â”€â”€ SECTION DIVIDER GRADIENTS (visual flow between sections) â”€â”€ */
 .why-us::after,
@@ -1628,8 +1634,9 @@ html {
 .testi-card {
   transform-style: preserve-3d;
   perspective: 1000px;
-  /* Override default simple transition for smoother tilt tracking */
-  transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.3s, box-shadow 0.3s !important;
+  /* Override default simple transition for smoother tilt tracking.
+     opacity is kept so .reveal elements still fade in on scroll. */
+  transition: opacity 0.65s var(--ease-out), transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.3s, box-shadow 0.3s !important;
 }
 
 .why-card *,

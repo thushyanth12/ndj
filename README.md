@@ -64,15 +64,13 @@ ndj/                         ← repository root
 ├── LICENSE                  ← MIT License
 ├── README.md                ← This file
 ├── assets/
-│   ├── logo.png             ← Ninja Design Hub logo
-│   ├── ndj.jpeg             ← NDJ brand image
-│   ├── hero-showcase.png    ← OG / hero image
-│   ├── project-florist.png  ← The Secret Florist project screenshot
+│   ├── logo-sm.png           ← Ninja Design Hub logo (optimized 220px)
+│   ├── NDH.jpeg              ← OG / social preview image
+│   ├── project-florist.jpg   ← The Secret Florist project screenshot (optimized)
 │   ├── project-dashboard.png
 │   ├── project-commerce.png
 │   ├── project-mobile.png
-│   ├── project-brand.png
-│   └── project-saas.png
+│   └── project-brand.png
 ├── react/
 │   ├── ProjectShowcase.jsx  ← Drop-in React component (Framer Motion)
 │   └── README.md            ← React component usage guide

@@ -165,7 +165,7 @@ type Project = {
   title: "My New Project",
   type: "SaaS",
   year: "2026",
-  image: "/assets/project-saas.png",
+  image: "/assets/project-brand.png",
   gradient: "from-[#0F172A] to-[#22D3EE]",
   tags: ["Next.js", "Tailwind", "Supabase"],
   impact: 64,

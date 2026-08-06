@@ -54,24 +54,6 @@ function Save-Art {
     $canvas.Bitmap.Dispose()
 }
 
-Save-Art "hero-showcase.png" 1600 2000 {
-    param($g, $w, $h)
-    for ($i = 0; $i -lt 18; $i++) {
-        $x = 90 + ($i * 82)
-        Add-Line $g $x 0 ($x + 320) $h "#151515" 3
-    }
-    Add-Panel $g 180 260 940 560 "#F4F4F0" "#FFFFFF"
-    Add-Panel $g 320 470 960 610 "#101010" "#4A4A4A"
-    Add-Panel $g 450 770 850 620 "#E7E7E1" "#FFFFFF"
-    Add-Line $g 250 370 930 370 "#111111" 6
-    Add-Line $g 250 455 690 455 "#595959" 4
-    Add-Line $g 390 610 1150 610 "#FFFFFF" 4
-    Add-Line $g 390 710 990 710 "#8B0000" 6
-    Add-Line $g 535 920 1110 920 "#121212" 8
-    Add-Line $g 535 1040 920 1040 "#5F5F5F" 5
-    Add-Label $g "AK" 1180 1340 88 "#FFFFFF"
-}
-
 Save-Art "project-dashboard.png" 1600 1100 {
     param($g, $w, $h)
     Add-Panel $g 110 120 1380 860 "#EDEDE8" "#FFFFFF"
@@ -112,13 +94,4 @@ Save-Art "project-brand.png" 1200 1200 {
     Add-Line $g 240 760 960 760 "#111111" 10
     Add-Line $g 240 840 730 840 "#777777" 6
     Add-Line $g 240 930 340 930 "#8B0000" 12
-}
-
-Save-Art "project-saas.png" 1400 1100 {
-    param($g, $w, $h)
-    Add-Panel $g 100 110 1200 840 "#101010" "#333333"
-    Add-Panel $g 170 190 270 690 "#EDEDE8" "#FFFFFF"
-    Add-Panel $g 500 190 720 150 "#1B1B1B" "#444444"
-    for ($i = 0; $i -lt 4; $i++) { Add-Panel $g 500 (410 + $i * 115) 720 76 "#F1F1EC" "#C9C9C3" }
-    Add-Line $g 1020 238 1160 238 "#8B0000" 7
 }
